@@ -44,30 +44,39 @@ function App() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Parking App</h1>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-white shadow-sm hover:bg-indigo-500"
-        >
-          New Session
-        </button>
+    <div className="mx-auto max-w-5xl px-6 py-10">
+      <header className="rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white shadow-sm ring-1 ring-black/5">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight">Parking App</h1>
+            <p className="mt-1 text-sm text-white/80">Automate visitor parking sessions</p>
+          </div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/20 backdrop-blur transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60"
+          >
+            New Session
+          </button>
+        </div>
       </header>
 
-      <div className="mt-4 flex items-center justify-between rounded-md bg-indigo-50 p-3 text-sm text-indigo-800">
-        <div>
-          Desired end date: {desiredEndDate.toLocaleString()} ({remainingDays} day{remainingDays !== 1 ? "s" : ""} left)
+      <div className="mt-6 flex items-center justify-between rounded-xl border border-indigo-100 bg-white p-4 text-sm text-indigo-900 shadow-sm">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white">⏱️</span>
+          <div>
+            <div className="font-medium">Desired end date</div>
+            <div className="text-gray-700">{desiredEndDate.toLocaleString()}</div>
+          </div>
         </div>
-        <label className="ml-4 flex items-center gap-2 text-indigo-900">
-          <span>Days from now</span>
+        <label className="ml-4 flex items-center gap-2">
+          <span className="text-indigo-900">Days from now</span>
           <input
             type="number"
             min={1}
             max={30}
             value={remainingDays}
             onChange={(e) => updateDesiredDays(e.target.value)}
-            className="w-20 rounded-md border border-indigo-200 bg-white px-2 py-1 text-indigo-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="w-24 rounded-md border border-indigo-200 bg-white px-2 py-1 text-indigo-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
         </label>
       </div>
