@@ -51,7 +51,7 @@ function App() {
         </div>
       </header>
 
-      {desiredEndDate ? (
+      {desiredEndDate && (
         <div className="mt-6 flex items-center justify-between rounded-xl border border-indigo-100 bg-white p-4 text-sm text-indigo-900 shadow-sm">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white">⏱️</span>
@@ -61,10 +61,6 @@ function App() {
             </div>
           </div>
           <div className="text-xs text-gray-500">Set during session creation</div>
-        </div>
-      ) : (
-        <div className="mt-6 rounded-xl border border-dashed border-gray-300 bg-white p-4 text-sm text-gray-600">
-          Desired end date will be set when you create a session.
         </div>
       )}
 

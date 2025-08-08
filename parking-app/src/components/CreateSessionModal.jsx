@@ -10,7 +10,6 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
   const [loadingFavs, setLoadingFavs] = useState(false);
   const [plate, setPlate] = useState("");
   const [state, setState] = useState("TX");
-  const [location, setLocation] = useState("Visitor Lot A");
   const [expiresInDays, setExpiresInDays] = useState(1);
   const [desiredDaysFromNow, setDesiredDaysFromNow] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -35,14 +34,13 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
     if (!canSubmit) return;
     setSubmitting(true);
     try {
-      const session = await createSession({ plate, state, location, expiresInDays });
+      const session = await createSession({ plate, state, expiresInDays });
       const end = new Date();
       end.setDate(end.getDate() + Number(desiredDaysFromNow));
       onCreate?.(session, end);
       onRequestClose?.();
       setPlate("");
       setState("TX");
-      setLocation("Visitor Lot A");
       setExpiresInDays(1);
       setDesiredDaysFromNow(1);
     } finally {
@@ -53,7 +51,6 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
   function applyFavorite(fav) {
     setPlate(fav.plate);
     setState(fav.state || "TX");
-    setLocation(fav.defaultLocation || "Visitor Lot A");
   }
 
   return (
@@ -120,16 +117,6 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Location</label>
-          <input
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Visitor Lot A"
-          />
-        </div>
-
         <div className="pt-2">
           <button
             type="submit"
@@ -162,7 +149,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
                   </span>
                   <div>
                     <div className="text-sm font-medium text-gray-900">{f.nickname}</div>
-                    <div className="text-xs text-gray-600">{f.state} · {f.defaultLocation}</div>
+                    <div className="text-xs text-gray-600">{f.state}</div>
                   </div>
                 </div>
                 <button

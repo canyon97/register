@@ -1,4 +1,4 @@
-export async function createSession({ plate, state = "TX", expiresInDays = 1, location }) {
+export async function createSession({ plate, state = "TX", expiresInDays = 1 }) {
   await new Promise((r) => setTimeout(r, 400));
   const now = Date.now();
   return {
@@ -7,6 +7,5 @@ export async function createSession({ plate, state = "TX", expiresInDays = 1, lo
     state,
     startTime: new Date(now).toISOString(),
     expiresAt: new Date(now + expiresInDays * 24 * 60 * 60 * 1000).toISOString(),
-    location,
   };
 } 

@@ -42,7 +42,6 @@ export default function ActiveSessions({ sessions: externalSessions }) {
             <tr>
               <Th>Plate</Th>
               <Th>State</Th>
-              <Th>Location</Th>
               <Th>Start</Th>
               <Th>Expires</Th>
             </tr>
@@ -60,7 +59,6 @@ export default function ActiveSessions({ sessions: externalSessions }) {
                     {s.state}
                   </span>
                 </Td>
-                <Td>{s.location}</Td>
                 <Td>{new Date(s.startTime).toLocaleString()}</Td>
                 <Td>{new Date(s.expiresAt).toLocaleString()}</Td>
               </tr>
