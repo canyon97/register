@@ -36,7 +36,38 @@ export default function ActiveSessions({ sessions: externalSessions }) {
 
   return (
     <section className="mt-8">
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+      {/* Mobile cards */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((s) => (
+          <div key={s.id} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="rounded-md bg-gray-900 px-2 py-1 font-mono text-xs font-semibold text-white ring-1 ring-inset ring-gray-800">{s.plate}</span>
+              <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200">{s.state}</span>
+            </div>
+            <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+              <div className="flex flex-col">
+                <dt className="text-xs font-medium text-gray-500">Vehicle</dt>
+                <dd className="text-gray-800">{s.make || s.model || s.color ? [s.make, s.model, s.color].filter(Boolean).join(" ") : "—"}</dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-xs font-medium text-gray-500">Start</dt>
+                <dd className="text-gray-800">{new Date(s.startTime).toLocaleString()}</dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-xs font-medium text-gray-500">Expires</dt>
+                <dd className="text-gray-800">{new Date(s.expiresAt).toLocaleString()}</dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="text-xs font-medium text-gray-500">Desired End</dt>
+                <dd className="text-gray-800">{s.desiredEndAt ? new Date(s.desiredEndAt).toLocaleString() : "—"}</dd>
+              </div>
+            </dl>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden md:block overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50/60">
             <tr>
@@ -82,12 +113,12 @@ export default function ActiveSessions({ sessions: externalSessions }) {
 
 function Th({ children }) {
   return (
-    <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-gray-600">
+    <th className="px-3 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-gray-600 sm:px-4">
       {children}
     </th>
   );
 }
 
 function Td({ children, className = "" }) {
-  return <td className={`px-4 py-3 text-sm text-gray-700 ${className}`}>{children}</td>;
+  return <td className={`px-3 py-3 text-sm text-gray-700 sm:px-4 ${className}`}>{children}</td>;
 } 

@@ -75,14 +75,14 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="mx-auto w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 outline-none max-h-[85vh] flex flex-col"
-      overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4"
+      className="mx-auto flex h-[100dvh] w-full max-w-none flex-col overflow-y-auto rounded-none bg-white p-4 shadow-xl outline-none sm:h-auto sm:max-w-lg sm:rounded-2xl sm:p-6 sm:ring-1 sm:ring-black/5"
+      overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center px-0 sm:px-4"
       contentLabel="Create Parking Session"
     >
-      <h2 className="text-xl font-semibold tracking-tight text-gray-900">Create Parking Session</h2>
-      <p className="mt-1 text-sm text-gray-600">Default state is TX. Default expiration is 1 day.</p>
+      <h2 className="text-lg font-semibold tracking-tight text-gray-900 sm:text-xl">Create Parking Session</h2>
+      <p className="mt-1 text-xs text-gray-600 sm:text-sm">Default state is TX. Default expiration is 1 day.</p>
 
-      <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+      <form className="mt-3 space-y-3 sm:mt-4 sm:space-y-4" onSubmit={handleSubmit}>
         <div>
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-gray-700">Plate</label>
@@ -103,7 +103,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">State</label>
             <select
@@ -130,7 +130,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Model</label>
             <input
@@ -164,25 +164,23 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
           />
         </div>
 
-        <div className="pt-2">
+        <div className="pt-1 sm:pt-2">
           <button
             type="submit"
             disabled={!canSubmit || submitting}
-            className="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
           >
             {submitting ? "Creating…" : "Create Session"}
           </button>
           <button
             type="button"
             onClick={onRequestClose}
-            className="ml-3 inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50"
+            className="mt-2 inline-flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 sm:ml-3 sm:mt-0 sm:w-auto"
           >
             Cancel
           </button>
         </div>
       </form>
-
-      {/* Favorites list removed: use the picker modal only */}
 
       <FavoritesPickerModal
         isOpen={pickerOpen}
