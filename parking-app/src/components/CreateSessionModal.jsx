@@ -2,12 +2,14 @@ import Modal from "react-modal";
 import { useEffect, useMemo, useState } from "react";
 import { getFavorites } from "../api/favorites";
 import { createSession } from "../api/createSession";
+import FavoritesPickerModal from "./FavoritesPickerModal";
 
 Modal.setAppElement("#root");
 
 export default function CreateSessionModal({ isOpen, onRequestClose, onCreate }) {
   const [favorites, setFavorites] = useState([]);
   const [loadingFavs, setLoadingFavs] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [plate, setPlate] = useState("");
   const [state, setState] = useState("TX");
   const [make, setMake] = useState("");
@@ -82,7 +84,16 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
 
       <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Plate</label>
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-medium text-gray-700">Plate</label>
+            <button
+              type="button"
+              onClick={() => setPickerOpen(true)}
+              className="text-xs text-indigo-700 hover:underline"
+            >
+              Choose from favorites
+            </button>
+          </div>
           <input
             className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             value={plate}
@@ -172,7 +183,16 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
       </form>
 
       <div className="mt-6 border-t border-gray-100 pt-4 flex-1 min-h-0">
-        <h3 className="text-sm font-semibold text-gray-800">Favorites</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-800">Favorites</h3>
+          <button
+            type="button"
+            onClick={() => setPickerOpen(true)}
+            className="text-xs text-indigo-700 hover:underline"
+          >
+            Open picker
+          </button>
+        </div>
         {loadingFavs ? (
           <div className="mt-2 text-gray-500">Loading…</div>
         ) : (
@@ -199,6 +219,13 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
           </ul>
         )}
       </div>
+
+      <FavoritesPickerModal
+        isOpen={pickerOpen}
+        onRequestClose={() => setPickerOpen(false)}
+        favorites={favorites}
+        onPick={(fav) => applyFavorite(fav)}
+      />
     </Modal>
   );
 } 
