@@ -30,7 +30,10 @@ function App() {
   }, [desiredEndDate]);
 
   function handleCreate(session, newDesiredEndDate) {
-    setSessions((prev) => [session, ...prev]);
+    const withDesired = newDesiredEndDate
+      ? { ...session, desiredEndAt: newDesiredEndDate.toISOString() }
+      : session;
+    setSessions((prev) => [withDesired, ...prev]);
     if (newDesiredEndDate) setDesiredEndDate(newDesiredEndDate);
   }
 

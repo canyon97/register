@@ -45,6 +45,7 @@ export default function ActiveSessions({ sessions: externalSessions }) {
               <Th>Vehicle</Th>
               <Th>Start</Th>
               <Th>Expires</Th>
+              <Th>Desired End</Th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -69,6 +70,7 @@ export default function ActiveSessions({ sessions: externalSessions }) {
                 </Td>
                 <Td>{new Date(s.startTime).toLocaleString()}</Td>
                 <Td>{new Date(s.expiresAt).toLocaleString()}</Td>
+                <Td>{s.desiredEndAt ? new Date(s.desiredEndAt).toLocaleString() : <span className="text-gray-400">—</span>}</Td>
               </tr>
             ))}
           </tbody>
