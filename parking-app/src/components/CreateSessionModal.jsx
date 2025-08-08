@@ -73,7 +73,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="mx-auto w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 outline-none"
+      className="mx-auto w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 outline-none max-h-[85vh] flex flex-col"
       overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4"
       contentLabel="Create Parking Session"
     >
@@ -171,12 +171,12 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
         </div>
       </form>
 
-      <div className="mt-6 border-t border-gray-100 pt-4">
+      <div className="mt-6 border-t border-gray-100 pt-4 flex-1 min-h-0">
         <h3 className="text-sm font-semibold text-gray-800">Favorites</h3>
         {loadingFavs ? (
           <div className="mt-2 text-gray-500">Loading…</div>
         ) : (
-          <ul className="mt-2 max-h-44 space-y-2 overflow-y-auto">
+          <ul className="mt-2 grid max-h-full grid-cols-1 gap-2 overflow-y-auto pr-1 sm:grid-cols-2">
             {favorites.map((f) => (
               <li key={f.id} className="flex items-center justify-between rounded-lg border border-gray-200 p-2">
                 <div className="flex items-center gap-3">
