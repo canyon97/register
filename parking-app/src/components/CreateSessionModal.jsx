@@ -12,6 +12,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
   const [state, setState] = useState("TX");
   const [location, setLocation] = useState("Visitor Lot A");
   const [expiresInDays, setExpiresInDays] = useState(1);
+  const [desiredDaysFromNow, setDesiredDaysFromNow] = useState(1);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -21,9 +22,13 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
       setFavorites(f);
       setLoadingFavs(false);
     });
+    // reset defaults each open
+    setState("TX");
+    setExpiresInDays(1);
+    setDesiredDaysFromNow(1);
   }, [isOpen]);
 
-  const canSubmit = useMemo(() => plate.trim().length >= 3 && expiresInDays >= 1, [plate, expiresInDays]);
+  const canSubmit = useMemo(() => plate.trim().length >= 3 && expiresInDays >= 1 && desiredDaysFromNow >= 1, [plate, expiresInDays, desiredDaysFromNow]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,12 +36,15 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
     setSubmitting(true);
     try {
       const session = await createSession({ plate, state, location, expiresInDays });
-      onCreate?.(session);
+      const end = new Date();
+      end.setDate(end.getDate() + Number(desiredDaysFromNow));
+      onCreate?.(session, end);
       onRequestClose?.();
       setPlate("");
       setState("TX");
       setLocation("Visitor Lot A");
       setExpiresInDays(1);
+      setDesiredDaysFromNow(1);
     } finally {
       setSubmitting(false);
     }
@@ -95,6 +103,19 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
               value={expiresInDays}
               onChange={(e) => setExpiresInDays(Number(e.target.value))}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Desired end (days from now)</label>
+            <input
+              type="number"
+              min={1}
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              value={desiredDaysFromNow}
+              onChange={(e) => setDesiredDaysFromNow(Number(e.target.value))}
             />
           </div>
         </div>

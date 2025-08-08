@@ -8,11 +8,7 @@ import { startSessionScheduler } from "./utils/sessionScheduler";
 function App() {
   const [sessions, setSessions] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [desiredEndDate, setDesiredEndDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d;
-  });
+  const [desiredEndDate, setDesiredEndDate] = useState(null);
 
   useEffect(() => {
     fetchActiveSessions().then(setSessions);
@@ -28,19 +24,14 @@ function App() {
   }, [desiredEndDate, sessions]);
 
   const remainingDays = useMemo(() => {
+    if (!desiredEndDate) return null;
     const ms = Math.max(0, desiredEndDate.getTime() - Date.now());
     return Math.ceil(ms / (24 * 60 * 60 * 1000));
   }, [desiredEndDate]);
 
-  function handleCreate(session) {
+  function handleCreate(session, newDesiredEndDate) {
     setSessions((prev) => [session, ...prev]);
-  }
-
-  function updateDesiredDays(days) {
-    const num = Math.max(1, Math.min(30, Number(days) || 1));
-    const d = new Date();
-    d.setDate(d.getDate() + num);
-    setDesiredEndDate(d);
+    if (newDesiredEndDate) setDesiredEndDate(newDesiredEndDate);
   }
 
   return (
@@ -60,26 +51,22 @@ function App() {
         </div>
       </header>
 
-      <div className="mt-6 flex items-center justify-between rounded-xl border border-indigo-100 bg-white p-4 text-sm text-indigo-900 shadow-sm">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white">⏱️</span>
-          <div>
-            <div className="font-medium">Desired end date</div>
-            <div className="text-gray-700">{desiredEndDate.toLocaleString()}</div>
+      {desiredEndDate ? (
+        <div className="mt-6 flex items-center justify-between rounded-xl border border-indigo-100 bg-white p-4 text-sm text-indigo-900 shadow-sm">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white">⏱️</span>
+            <div>
+              <div className="font-medium">Desired end date</div>
+              <div className="text-gray-700">{desiredEndDate.toLocaleString()} ({remainingDays} day{remainingDays !== 1 ? "s" : ""} left)</div>
+            </div>
           </div>
+          <div className="text-xs text-gray-500">Set during session creation</div>
         </div>
-        <label className="ml-4 flex items-center gap-2">
-          <span className="text-indigo-900">Days from now</span>
-          <input
-            type="number"
-            min={1}
-            max={30}
-            value={remainingDays}
-            onChange={(e) => updateDesiredDays(e.target.value)}
-            className="w-24 rounded-md border border-indigo-200 bg-white px-2 py-1 text-indigo-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          />
-        </label>
-      </div>
+      ) : (
+        <div className="mt-6 rounded-xl border border-dashed border-gray-300 bg-white p-4 text-sm text-gray-600">
+          Desired end date will be set when you create a session.
+        </div>
+      )}
 
       <ActiveSessions sessions={sessions} />
 
