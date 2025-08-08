@@ -10,7 +10,6 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
   const [loadingFavs, setLoadingFavs] = useState(false);
   const [plate, setPlate] = useState("");
   const [state, setState] = useState("TX");
-  const [expiresInDays, setExpiresInDays] = useState(1);
   const [desiredDaysFromNow, setDesiredDaysFromNow] = useState(1);
   const [submitting, setSubmitting] = useState(false);
 
@@ -23,25 +22,23 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
     });
     // reset defaults each open
     setState("TX");
-    setExpiresInDays(1);
     setDesiredDaysFromNow(1);
   }, [isOpen]);
 
-  const canSubmit = useMemo(() => plate.trim().length >= 3 && expiresInDays >= 1 && desiredDaysFromNow >= 1, [plate, expiresInDays, desiredDaysFromNow]);
+  const canSubmit = useMemo(() => plate.trim().length >= 3 && desiredDaysFromNow >= 1, [plate, desiredDaysFromNow]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!canSubmit) return;
     setSubmitting(true);
     try {
-      const session = await createSession({ plate, state, expiresInDays });
+      const session = await createSession({ plate, state });
       const end = new Date();
       end.setDate(end.getDate() + Number(desiredDaysFromNow));
       onCreate?.(session, end);
       onRequestClose?.();
       setPlate("");
       setState("TX");
-      setExpiresInDays(1);
       setDesiredDaysFromNow(1);
     } finally {
       setSubmitting(false);
@@ -90,17 +87,6 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
                 </option>
               ))}
             </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Expires (days)</label>
-            <input
-              type="number"
-              min={1}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              value={expiresInDays}
-              onChange={(e) => setExpiresInDays(Number(e.target.value))}
-            />
           </div>
         </div>
 
