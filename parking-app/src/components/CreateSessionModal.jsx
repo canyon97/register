@@ -89,7 +89,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
             <button
               type="button"
               onClick={() => setPickerOpen(true)}
-              className="text-xs text-indigo-700 hover:underline"
+              className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 shadow-sm hover:bg-gray-50"
             >
               Choose from favorites
             </button>
@@ -182,43 +182,7 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
         </div>
       </form>
 
-      <div className="mt-6 border-t border-gray-100 pt-4 flex-1 min-h-0">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-800">Favorites</h3>
-          <button
-            type="button"
-            onClick={() => setPickerOpen(true)}
-            className="text-xs text-indigo-700 hover:underline"
-          >
-            Open picker
-          </button>
-        </div>
-        {loadingFavs ? (
-          <div className="mt-2 text-gray-500">Loading…</div>
-        ) : (
-          <ul className="mt-2 grid max-h-full grid-cols-1 gap-2 overflow-y-auto pr-1 sm:grid-cols-2">
-            {favorites.map((f) => (
-              <li key={f.id} className="flex items-center justify-between rounded-lg border border-gray-200 p-2">
-                <div className="flex items-center gap-3">
-                  <span className="rounded-md bg-gray-900 px-2 py-1 font-mono text-xs font-semibold text-white ring-1 ring-inset ring-gray-800">
-                    {f.plate}
-                  </span>
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{f.nickname}</div>
-                    <div className="text-xs text-gray-600">{f.state}</div>
-                  </div>
-                </div>
-                <button
-                  className="rounded-lg border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 shadow-sm transition hover:bg-gray-50"
-                  onClick={() => applyFavorite(f)}
-                >
-                  Use
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {/* Favorites list removed: use the picker modal only */}
 
       <FavoritesPickerModal
         isOpen={pickerOpen}
