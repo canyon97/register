@@ -1,11 +1,14 @@
-export async function createSession({ plate, state = "TX", expiresInDays = 1 }) {
+export async function createSession({ plate, state = "TX", make, model, color }) {
   await new Promise((r) => setTimeout(r, 400));
   const now = Date.now();
   return {
     id: `sess_${Math.random().toString(36).slice(2, 8)}`,
     plate,
     state,
+    make,
+    model,
+    color,
     startTime: new Date(now).toISOString(),
-    expiresAt: new Date(now + expiresInDays * 24 * 60 * 60 * 1000).toISOString(),
+    expiresAt: new Date(now + 24 * 60 * 60 * 1000).toISOString(),
   };
 } 

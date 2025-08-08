@@ -42,6 +42,7 @@ export default function ActiveSessions({ sessions: externalSessions }) {
             <tr>
               <Th>Plate</Th>
               <Th>State</Th>
+              <Th>Vehicle</Th>
               <Th>Start</Th>
               <Th>Expires</Th>
             </tr>
@@ -58,6 +59,13 @@ export default function ActiveSessions({ sessions: externalSessions }) {
                   <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200">
                     {s.state}
                   </span>
+                </Td>
+                <Td>
+                  {s.make || s.model || s.color ? (
+                    <span className="text-gray-700">{[s.make, s.model, s.color].filter(Boolean).join(" ")}</span>
+                  ) : (
+                    <span className="text-gray-400">—</span>
+                  )}
                 </Td>
                 <Td>{new Date(s.startTime).toLocaleString()}</Td>
                 <Td>{new Date(s.expiresAt).toLocaleString()}</Td>

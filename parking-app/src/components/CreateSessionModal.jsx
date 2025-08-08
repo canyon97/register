@@ -10,6 +10,9 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
   const [loadingFavs, setLoadingFavs] = useState(false);
   const [plate, setPlate] = useState("");
   const [state, setState] = useState("TX");
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [color, setColor] = useState("");
   const [desiredDaysFromNow, setDesiredDaysFromNow] = useState(1);
   const [submitting, setSubmitting] = useState(false);
 
@@ -22,23 +25,39 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
     });
     // reset defaults each open
     setState("TX");
+    setPlate("");
+    setMake("");
+    setModel("");
+    setColor("");
     setDesiredDaysFromNow(1);
   }, [isOpen]);
 
-  const canSubmit = useMemo(() => plate.trim().length >= 3 && desiredDaysFromNow >= 1, [plate, desiredDaysFromNow]);
+  const canSubmit = useMemo(
+    () =>
+      plate.trim().length >= 3 &&
+      state.trim().length >= 2 &&
+      make.trim().length > 0 &&
+      model.trim().length > 0 &&
+      color.trim().length > 0 &&
+      desiredDaysFromNow >= 1,
+    [plate, state, make, model, color, desiredDaysFromNow]
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!canSubmit) return;
     setSubmitting(true);
     try {
-      const session = await createSession({ plate, state });
+      const session = await createSession({ plate, state, make, model, color });
       const end = new Date();
       end.setDate(end.getDate() + Number(desiredDaysFromNow));
       onCreate?.(session, end);
       onRequestClose?.();
       setPlate("");
       setState("TX");
+      setMake("");
+      setModel("");
+      setColor("");
       setDesiredDaysFromNow(1);
     } finally {
       setSubmitting(false);
@@ -88,19 +107,50 @@ export default function CreateSessionModal({ isOpen, onRequestClose, onCreate })
               ))}
             </select>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Make</label>
+            <input
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              value={make}
+              onChange={(e) => setMake(e.target.value)}
+              placeholder="Toyota"
+              required
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Desired end (days from now)</label>
+            <label className="block text-sm font-medium text-gray-700">Model</label>
             <input
-              type="number"
-              min={1}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              value={desiredDaysFromNow}
-              onChange={(e) => setDesiredDaysFromNow(Number(e.target.value))}
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              placeholder="Camry"
+              required
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Color</label>
+            <input
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="Blue"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Desired end (days from now)</label>
+          <input
+            type="number"
+            min={1}
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            value={desiredDaysFromNow}
+            onChange={(e) => setDesiredDaysFromNow(Number(e.target.value))}
+          />
         </div>
 
         <div className="pt-2">
